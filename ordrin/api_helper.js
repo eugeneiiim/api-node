@@ -70,6 +70,7 @@
           callback({msg:res.error, body:res.body});
         }
       });
+      return partial;
     };
 
     this.call_endpoint = function(endpoint_group, endpoint_name, url_params, kwargs, callback){
@@ -127,7 +128,7 @@
       } else {
         login = null;
       }
-      call_api(urls[endpoint_group], endpoint_data.meta.method, uri, data, login, callback);
+      return call_api(urls[endpoint_group], endpoint_data.meta.method, uri, data, login, callback);
     }
   };
 }());
