@@ -18,7 +18,7 @@
 
   exports.PRODUCTION = PRODUCTION = 0;
   exports.TEST = TEST = 1;
-  
+
   exports.APIHelper = function(api_key, servers, return_request_info){
     var urls = {};
     if(_.isUndefined(servers)){
@@ -33,7 +33,7 @@
       urls.user = "https://u-test.ordr.in";
       urls.order = "https://o-test.ordr.in";
     }
-    
+
     function call_api(base_url, method, uri, data, login, callback){
       var full_url, partial, hash, headers;
       full_url = base_url+uri;
@@ -47,7 +47,12 @@
         hash = hash.update(login.password+login.email+uri).digest("hex");
         headers["X-NAAMA-AUTHENTICATION"] = 'username="'+login.email+'", response="'+hash+'", version="1"';
       }
-      partial = partial.set(headers);
+      try {
+        partial = partial.set(headers);
+      } catch (e) {
+        console.trace('exception occurred in "partial = partial.set(headers)": ', e);
+        return callback(e);
+      }
       if(data){
         partial = partial.type("form").send(data);
       }
